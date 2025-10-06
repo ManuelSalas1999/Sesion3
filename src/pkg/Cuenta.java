@@ -11,10 +11,10 @@ public class Cuenta {
 	}
 
 	public void ingresar(int i) {
-saldo = 200.0;		
+saldo += i;		
 	}
 	public void retirar(int i) {
-saldo=-200.0;		
+saldo -=i;		
 	}
 
 	public String getNumero() {
@@ -34,7 +34,7 @@ saldo=-200.0;
 	}
 
 	public double getSaldo() {
-		return 200;
+		return saldo;
 	}
 
 	public void setSaldo(Double saldo) {
