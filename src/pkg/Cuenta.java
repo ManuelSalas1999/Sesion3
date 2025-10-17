@@ -1,21 +1,40 @@
 package pkg;
-
+import java.util.ArrayList;
+import java.util.List;
 public class Cuenta {
 	
 	String numero;
 	String titular;
 	Double saldo;
-	
-	public Cuenta(Double i) {
-	this.saldo=i;
-	}
+    private List<Movimiento> movimientos;
+    
+    public Cuenta(double saldoInicial) {
+        this.saldo = saldoInicial;
+        this.movimientos = new ArrayList<>();
+    }
 
-	public void ingresar(int i) {
-saldo += i;		
-	}
-	public void retirar(int i) {
-saldo -=i;		
-	}
+    public void ingresar(double cantidad) {
+        if (cantidad <= 0) {
+            throw new IllegalArgumentException("La cantidad debe ser positiva");
+        }
+        registrarMovimiento("Ingreso", Signo.H, cantidad);
+    }
+
+    public void retirar(double cantidad) {
+        if (cantidad <= 0) {
+            throw new IllegalArgumentException("La cantidad debe ser positiva");
+        }
+        if (cantidad > saldo) {
+            throw new IllegalArgumentException("Saldo insuficiente");
+        }
+        registrarMovimiento("Retiro", Signo.D, cantidad);
+    }
+
+    private void registrarMovimiento(String detalle, Signo signo, double cantidad) {
+        double factor = (signo == Signo.H) ? 1 : -1;
+        saldo += factor * cantidad;
+        movimientos.add(new Movimiento(detalle, signo, cantidad));
+    }
 
 	public String getNumero() {
 		return numero;
