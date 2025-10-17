@@ -8,6 +8,8 @@ public class Cuenta {
 	Double saldo;
     private List<Movimiento> movimientos;
     
+    private static final double LIMITE_DESCUBIERTO = -500.0;
+    
     public Cuenta(double saldoInicial) {
         this.saldo = saldoInicial;
         this.movimientos = new ArrayList<>();
@@ -22,11 +24,16 @@ public class Cuenta {
 
     public void retirar(double cantidad) {
         if (cantidad <= 0) {
-            throw new IllegalArgumentException("La cantidad debe ser positiva");
+            throw new IllegalArgumentException("La cantidad a retirar debe ser positiva");
         }
-        if (cantidad > saldo) {
-            throw new IllegalArgumentException("Saldo insuficiente");
+
+        // Verificar límite de descubierto
+        if ((saldo - cantidad) < LIMITE_DESCUBIERTO) {
+            throw new IllegalArgumentException(
+                String.format("Fondos insuficientes (saldo %.2f€, intento de reintegro %.2f€)", saldo, cantidad)
+            );
         }
+
         registrarMovimiento("Retiro", Signo.D, cantidad);
     }
 
